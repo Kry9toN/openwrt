@@ -48,6 +48,10 @@ define Build/append-loader-okli
 	cat "$(KDIR)/loader-$(word 1,$(1)).$(LOADER_TYPE)" >> "$@"
 endef
 
+define Build/append-loader-okli-uimage
+	cat "$(KDIR)/loader-$(word 1,$(1)).uImage" >> "$@"
+endef
+
 define Build/relocate-kernel
 	rm -rf $@.relocate
 	$(CP) ../../generic/image/relocate $@.relocate
@@ -77,7 +81,7 @@ define Device/Default
   COMPILE :=
   IMAGES := sysupgrade.bin
   IMAGE/sysupgrade.bin = append-kernel | pad-to $$$$(BLOCKSIZE) | \
-	append-rootfs | pad-rootfs | append-metadata | check-size
+	append-rootfs | pad-rootfs | check-size | append-metadata
 endef
 
 include $(SUBTARGET).mk
